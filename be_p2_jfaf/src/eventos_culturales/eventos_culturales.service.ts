@@ -16,7 +16,7 @@ export class EventosCulturalesService {
     let evento = await this.eventosRepository.findOne({
       where: {
         titulo: createEventoDto.titulo,
-        recinto: { id: createEventoDto.id_recinto },
+        recinto: { id: createEventoDto.idRecinto },
       },
       relations: { recinto: true },
     });
@@ -30,7 +30,7 @@ export class EventosCulturalesService {
   async findAll(): Promise<EventoCultural[]> {
     return this.eventosRepository.find({
       relations: { recinto: true },
-      order: { fecha_evento: 'ASC' },
+      order: { fechaEvento: 'ASC' },
     });
   }
 
@@ -38,7 +38,7 @@ export class EventosCulturalesService {
     return this.eventosRepository.find({
       where: { recinto: { id: idRecinto } },
       relations: { recinto: true },
-      order: { fecha_evento: 'ASC' },
+      order: { fechaEvento: 'ASC' },
     });
   }
 

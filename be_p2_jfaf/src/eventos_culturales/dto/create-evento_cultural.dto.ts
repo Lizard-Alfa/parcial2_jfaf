@@ -17,13 +17,15 @@ export class CreateEventoCulturalDto {
   @ApiProperty()
   @IsDefined({ message: 'El id del recinto es obligatorio' })
   @IsInt({ message: 'El id del recinto debe ser tipo numérico' })
-  readonly id_recinto: number;
+  readonly idRecinto: number;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'El título es obligatorio' })
   @IsString({ message: 'El título debe ser de tipo cadena' })
   @MaxLength(150, { message: 'El título no puede tener más de 150 caracteres' })
-  @Transform(({ value }): string | undefined => (typeof value == 'string' ? value.trim() : value))
+  @Transform(({ value }): string | undefined =>
+    typeof value == 'string' ? value.trim() : value,
+  )
   readonly titulo: string;
 
   @ApiProperty()
@@ -32,38 +34,57 @@ export class CreateEventoCulturalDto {
   @MaxLength(100, {
     message: 'El artista principal no puede tener más de 100 caracteres',
   })
-  @Transform(({ value }): string | undefined => (typeof value == 'string' ? value.trim() : value))
-  readonly artista_principal: string;
+  @Transform(({ value }): string | undefined =>
+    typeof value == 'string' ? value.trim() : value,
+  )
+  readonly artistaPrincipal: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'La duración en minutos es obligatoria' })
   @IsInt({ message: 'La duración debe ser de tipo numérico entero' })
   @Min(1, { message: 'La duración debe ser mayor a 0 minutos' })
-  readonly duracion_minutos: number;
+  readonly duracionMinutos: number;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'El precio de entrada es obligatorio' })
   @IsNumber(
     { maxDecimalPlaces: 2 },
-    { message: 'El precio debe ser un número decimal con máximo 2 decimales' },
+    { message: 'El precio debe ser un número decimal' },
   )
   @Min(0, { message: 'El precio no puede ser negativo' })
-  readonly precio_entrada: number;
+  readonly precioEntrada: number;
 
   @ApiProperty()
   @IsDefined({ message: 'La fecha del evento es obligatoria' })
-  @IsDateString({}, { message: 'La fecha del evento debe ser de tipo fecha (YYYY-MM-DD)' })
-  readonly fecha_evento: Date;
+  @IsDateString({}, { message: 'La fecha del evento debe ser de tipo fecha' })
+  readonly fechaEvento: Date;
+
+  @ApiProperty({
+    description: 'Categoría del evento cultural',
+    enum: ['Concierto', 'Teatro', 'Danza', 'Festival'],
+    default: 'Concierto',
+    example: 'Concierto',
+  })
+  @IsNotEmpty({ message: 'La categoría del evento es obligatoria' })
+  @IsString({ message: 'La categoría debe ser de tipo cadena' })
+  @MaxLength(30, {
+    message: 'La categoría no puede tener más de 30 caracteres',
+  })
+  @IsIn(['Concierto', 'Teatro', 'Danza', 'Festival'], {
+    message: 'La categoría debe ser: Concierto, Teatro, Danza o Festival',
+  })
+  readonly categoriaEvento: string;
 
   @ApiProperty({
     description: 'Estado del evento',
     enum: ['Programado', 'Agotado', 'Cancelado'],
     default: 'Programado',
+    example: 'Programado',
   })
   @IsNotEmpty({ message: 'El estado es obligatorio' })
   @IsString({ message: 'El estado debe ser de tipo cadena' })
   @IsIn(['Programado', 'Agotado', 'Cancelado'], {
-    message: 'El estado debe ser uno de los siguientes valores: Programado, Agotado, Cancelado',
+    message: 'El estado debe ser: Programado, Agotado o Cancelado',
   })
   readonly estado: string;
 }
